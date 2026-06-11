@@ -50,7 +50,7 @@
 
       <div class="mode-buttons">
         <button id="start-card-btn" class="btn btn--primary">KAARTSPEL</button>
-        <button id="start-scoreboard-btn" class="btn btn--mode-board">MET TEAMS</button>
+        <button id="start-scoreboard-btn" class="btn btn--mode-board">MET BORD</button>
       </div>
 
       <p class="powered-by-label">POWERED BY HAN GREEN OFFICE</p>
@@ -221,6 +221,42 @@
     </div>
 
   </section>
+
+  <!-- =====================================================
+       5. BORD SCHERM
+  ===================================================== -->
+  <section id="board-screen" class="screen">
+    <div class="board-content">
+
+      <div class="board-turn-bar">
+        <span class="board-turn-label">AAN DE BEURT</span>
+        <span id="board-current-team" class="board-current-team-name">–</span>
+      </div>
+
+      <div class="board-area">
+        <div id="board-grid" class="board-grid"></div>
+        <div class="board-start-row">
+          <div class="board-start-label">START</div>
+          <div id="board-start-pawns" class="board-start-pawns"></div>
+        </div>
+      </div>
+
+      <div class="board-actions">
+        <button id="board-play-btn" class="btn btn--primary">BEURT STARTEN</button>
+        <button id="board-reset-btn" class="btn btn--reset">NIEUW SPEL</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Win overlay -->
+  <div id="win-overlay" class="win-overlay">
+    <p class="win-title">GEWONNEN!</p>
+    <div class="win-divider"></div>
+    <p id="win-team-name" class="win-team-name">Team 1</p>
+    <p class="win-sub">heeft het bord uitgespeeld</p>
+    <button class="btn btn--primary" id="win-new-game-btn">NIEUW SPEL</button>
+  </div>
 
   <script src="script.js"></script>
 </body>

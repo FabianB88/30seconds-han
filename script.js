@@ -808,6 +808,7 @@ function handleNextRound() {
 }
 
 function handleReset() {
+  clearGameState();
   removeTimesUpOverlay();
   stopTimer();
   resetTimerVisuals();
@@ -816,11 +817,15 @@ function handleReset() {
   cardFlipper.style.cursor = 'pointer';
   gameScreen.classList.remove('screen--active');
   if (scoreboardScreen) scoreboardScreen.classList.remove('screen--active');
+  const boardScreen = document.getElementById('board-screen');
+  if (boardScreen) boardScreen.classList.remove('screen--active');
+  const winOverlay = document.getElementById('win-overlay');
+  if (winOverlay) winOverlay.classList.remove('win-overlay--visible');
   startScreen.classList.add('screen--active');
   state.score = 0; state.round = 1;
   state.usedIndices = []; state.currentCard = null; state.gameRunning = false;
   scoreEl.textContent = '0'; roundEl.textContent = '1';
-  if (scoreboardState) scoreboardState.active = false;
+  if (scoreboardState) { scoreboardState.active = false; scoreboardState.boardActive = false; }
 }
 
 /* ----------------------------------------------------------------
@@ -880,7 +885,8 @@ const TEAM_COLORS = ['#ff6ec7', '#00e5bb', '#ffd700', '#ff7043', '#a78bfa', '#34
 
 scoreboardState = {
   active:       false,
-  teams:        [],   // [{ name, score, color }]
+  boardActive:  false,
+  teams:        [],   // [{ name, score, color, position }]
   currentTeam:  0,
   pendingScore: 0
 };
@@ -942,12 +948,15 @@ function startScoreboardGame() {
   scoreboardState.currentTeam  = 0;
   scoreboardState.active       = true;
 
+  scoreboardState.boardActive = true;
+
   for (let i = 0; i < selectedTeamCount; i++) {
     const input = document.getElementById(`team-input-${i}`);
     scoreboardState.teams.push({
-      name:  (input && input.value.trim()) ? input.value.trim() : `Team ${i + 1}`,
-      score: 0,
-      color: TEAM_COLORS[i]
+      name:     (input && input.value.trim()) ? input.value.trim() : `Team ${i + 1}`,
+      score:    0,
+      color:    TEAM_COLORS[i],
+      position: 0
     });
   }
 
@@ -956,7 +965,8 @@ function startScoreboardGame() {
   state.usedIndices = [];
 
   teamSetupScreen.classList.remove('screen--active');
-  playNextTeamCard();
+  saveGameState();
+  showBoardScreen();
 }
 
 /* ----------------------------------------------------------------
@@ -1035,8 +1045,17 @@ function renderScoresList() {
 ---------------------------------------------------------------- */
 
 function confirmScore() {
-  scoreboardState.teams[scoreboardState.currentTeam].score
-    += scoreboardState.pendingScore;
+  const team = scoreboardState.teams[scoreboardState.currentTeam];
+  team.score    += scoreboardState.pendingScore;
+  team.position  = (team.position || 0) + scoreboardState.pendingScore;
+
+  saveGameState();
+
+  if (scoreboardState.boardActive && team.position >= BOARD_SQUARES) {
+    team.position = BOARD_SQUARES;
+    showWin(team);
+    return;
+  }
 
   renderScoresList();
   scoreEntryPanel.style.display = 'none';
@@ -1051,7 +1070,11 @@ function goNextTeam() {
   scoreboardState.currentTeam =
     (scoreboardState.currentTeam + 1) % scoreboardState.teams.length;
   scoreboardScreen.classList.remove('screen--active');
-  playNextTeamCard();
+  if (scoreboardState.boardActive) {
+    showBoardScreen();
+  } else {
+    playNextTeamCard();
+  }
 }
 
 /* ----------------------------------------------------------------
@@ -1102,4 +1125,150 @@ stopScoreboardBtn.addEventListener('click', () => {
   gameScreen.classList.remove('screen--active');
   startScreen.classList.add('screen--active');
 });
+
+/* ================================================================
+   13. BORD – LOGICA
+================================================================ */
+
+const BOARD_SQUARES = 60;
+
+/* ----------------------------------------------------------------
+   localStorage
+---------------------------------------------------------------- */
+function saveGameState() {
+  if (!scoreboardState.boardActive) return;
+  localStorage.setItem('30s-han-board', JSON.stringify({
+    teams:            scoreboardState.teams,
+    currentTeam:      scoreboardState.currentTeam,
+    selectedCategory: state.selectedCategory,
+    filteredCards:    state.filteredCards,
+    usedIndices:      state.usedIndices
+  }));
+}
+
+function loadGameState() {
+  try {
+    const raw = localStorage.getItem('30s-han-board');
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data.teams || !data.teams.length) return false;
+    scoreboardState.teams       = data.teams;
+    scoreboardState.currentTeam = data.currentTeam || 0;
+    scoreboardState.active      = true;
+    scoreboardState.boardActive = true;
+    state.selectedCategory      = data.selectedCategory || 'All';
+    state.filteredCards         = data.filteredCards || getFilteredCards();
+    state.usedIndices           = data.usedIndices   || [];
+    return true;
+  } catch (e) { return false; }
+}
+
+function clearGameState() {
+  localStorage.removeItem('30s-han-board');
+}
+
+/* ----------------------------------------------------------------
+   Bord opbouwen (snake-patroon)
+---------------------------------------------------------------- */
+function buildBoardOrder() {
+  const cells = [];
+  for (let rowFromBottom = 5; rowFromBottom >= 0; rowFromBottom--) {
+    const start = rowFromBottom * 10 + 1;
+    const row = Array.from({ length: 10 }, (_, i) => start + i);
+    if (rowFromBottom % 2 !== 0) row.reverse();
+    cells.push(...row);
+  }
+  return cells;
+}
+
+function renderBoard() {
+  const grid       = document.getElementById('board-grid');
+  const startPawns = document.getElementById('board-start-pawns');
+
+  if (!grid.dataset.built) {
+    buildBoardOrder().forEach(sq => {
+      const cell = document.createElement('div');
+      cell.className = 'board-cell' + (sq === BOARD_SQUARES ? ' board-cell--finish' : '');
+      cell.dataset.sq = sq;
+      const label = sq === BOARD_SQUARES ? sq + ' &#9873;' : sq;
+      cell.innerHTML = `<span class="cell-num">${label}</span><div class="cell-pawns"></div>`;
+      grid.appendChild(cell);
+    });
+    grid.dataset.built = '1';
+  }
+
+  grid.querySelectorAll('.cell-pawns').forEach(el => { el.innerHTML = ''; });
+  startPawns.innerHTML = '';
+
+  scoreboardState.teams.forEach(team => {
+    const pawn = document.createElement('span');
+    pawn.className = 'board-pawn';
+    pawn.style.background = team.color;
+    pawn.title = team.name;
+
+    const pos = team.position || 0;
+    if (pos <= 0) {
+      startPawns.appendChild(pawn);
+    } else {
+      const sq   = Math.min(pos, BOARD_SQUARES);
+      const cell = grid.querySelector(`[data-sq="${sq}"]`);
+      if (cell) cell.querySelector('.cell-pawns').appendChild(pawn);
+    }
+  });
+
+  const current = scoreboardState.teams[scoreboardState.currentTeam];
+  const nameEl  = document.getElementById('board-current-team');
+  if (nameEl && current) {
+    nameEl.textContent = current.name;
+    nameEl.style.color = current.color;
+  }
+}
+
+function showBoardScreen() {
+  renderBoard();
+  gameScreen.classList.remove('screen--active');
+  scoreboardScreen.classList.remove('screen--active');
+  teamSetupScreen.classList.remove('screen--active');
+  startScreen.classList.remove('screen--active');
+  document.getElementById('board-screen').classList.add('screen--active');
+}
+
+/* ----------------------------------------------------------------
+   Win
+---------------------------------------------------------------- */
+function showWin(team) {
+  clearGameState();
+  renderBoard();
+  document.getElementById('board-screen').classList.add('screen--active');
+  gameScreen.classList.remove('screen--active');
+  scoreboardScreen.classList.remove('screen--active');
+  startScreen.classList.remove('screen--active');
+  const nameEl = document.getElementById('win-team-name');
+  nameEl.textContent = team.name;
+  nameEl.style.color = team.color;
+  document.getElementById('win-overlay').classList.add('win-overlay--visible');
+}
+
+/* ----------------------------------------------------------------
+   Event listeners – bord
+---------------------------------------------------------------- */
+document.getElementById('board-play-btn').addEventListener('click', () => {
+  document.getElementById('board-screen').classList.remove('screen--active');
+  playNextTeamCard();
+});
+
+document.getElementById('board-reset-btn').addEventListener('click', () => {
+  handleReset();
+});
+
+document.getElementById('win-new-game-btn').addEventListener('click', () => {
+  handleReset();
+});
+
+/* ----------------------------------------------------------------
+   Herstel opgeslagen spelstand bij pagina-open
+---------------------------------------------------------------- */
+if (loadGameState()) {
+  showBoardScreen();
+}
 

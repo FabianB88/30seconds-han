@@ -1040,3 +1040,200 @@ body {
   .stepper-btn       { width: 44px; height: 44px; font-size: 22px; }
   .score-points      { font-size: 22px; }
 }
+
+/* ============================================================
+   BORD SCHERM
+============================================================ */
+#board-screen.screen--active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 28px 16px 48px;
+}
+
+.board-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* Beurt-header */
+.board-turn-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
+}
+
+.board-turn-label {
+  font-size: 10px;
+  letter-spacing: 0.30em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+}
+
+.board-current-team-name {
+  font-size: clamp(22px, 5vw, 38px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  text-shadow: 0 0 22px currentColor;
+}
+
+/* Scrollbaar bord-gebied */
+.board-area {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+
+/* Grid – 10 kolommen */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  min-width: 540px;
+}
+
+/* Cel */
+.board-cell {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(194, 0, 110, 0.22);
+  border-radius: 3px;
+  padding: 5px 2px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 50px;
+}
+
+.board-cell--finish {
+  background: rgba(255, 215, 0, 0.08);
+  border-color: rgba(255, 215, 0, 0.45);
+}
+
+.cell-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.32);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  user-select: none;
+}
+
+.board-cell--finish .cell-num {
+  color: rgba(255, 215, 0, 0.75);
+}
+
+/* Pionnen in een cel */
+.cell-pawns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  min-height: 14px;
+}
+
+/* Pion */
+.board-pawn {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.50);
+}
+
+/* START-rij onder het grid */
+.board-start-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 0 2px;
+  min-width: 540px;
+}
+
+.board-start-label {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.board-start-pawns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Actie-knoppen bord */
+.board-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ============================================================
+   WIN OVERLAY
+============================================================ */
+.win-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 400;
+  padding: 24px;
+  text-align: center;
+}
+
+.win-overlay--visible {
+  display: flex;
+}
+
+.win-title {
+  font-size: clamp(50px, 10vw, 90px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffd700;
+  text-shadow: 0 0 40px rgba(255, 215, 0, 0.60);
+  animation: hint-pulse 1.8s ease-in-out infinite;
+}
+
+.win-divider {
+  width: 120px;
+  height: 2px;
+  background: rgba(255, 215, 0, 0.28);
+}
+
+.win-team-name {
+  font-size: clamp(24px, 5vw, 44px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+}
+
+.win-sub {
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+}
