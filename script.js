@@ -1193,10 +1193,12 @@ function renderBoard() {
 
   if (!grid.dataset.built) {
     buildBoardOrder().forEach(sq => {
+      const band = Math.floor((sq - 1) / 10);
       const cell = document.createElement('div');
       cell.className = 'board-cell' + (sq === BOARD_SQUARES ? ' board-cell--finish' : '');
-      cell.dataset.sq = sq;
-      const label = sq === BOARD_SQUARES ? sq + ' &#9873;' : sq;
+      cell.dataset.sq   = sq;
+      cell.dataset.band = band;
+      const label = sq === BOARD_SQUARES ? '&#9873; ' + sq : sq;
       cell.innerHTML = `<span class="cell-num">${label}</span><div class="cell-pawns"></div>`;
       grid.appendChild(cell);
     });
@@ -1209,7 +1211,9 @@ function renderBoard() {
   scoreboardState.teams.forEach(team => {
     const pawn = document.createElement('span');
     pawn.className = 'board-pawn';
-    pawn.style.background = team.color;
+    pawn.style.background   = team.color;
+    pawn.style.borderColor  = 'rgba(255,255,255,0.65)';
+    pawn.style.boxShadow    = `0 2px 8px rgba(0,0,0,0.55), 0 0 10px ${team.color}99`;
     pawn.title = team.name;
 
     const pos = team.position || 0;
@@ -1222,11 +1226,31 @@ function renderBoard() {
     }
   });
 
+  // Huidig team label
   const current = scoreboardState.teams[scoreboardState.currentTeam];
   const nameEl  = document.getElementById('board-current-team');
   if (nameEl && current) {
     nameEl.textContent = current.name;
     nameEl.style.color = current.color;
+  }
+
+  // Team-statusbalk
+  const statusEl = document.getElementById('board-team-status');
+  if (statusEl) {
+    statusEl.innerHTML = '';
+    scoreboardState.teams.forEach((team, idx) => {
+      const isCurrent = idx === scoreboardState.currentTeam;
+      const pct = Math.round(((team.position || 0) / BOARD_SQUARES) * 100);
+      const item = document.createElement('div');
+      item.className = 'bts-item' + (isCurrent ? ' bts-item--active' : '');
+      item.innerHTML = `
+        <span class="bts-pawn" style="background:${team.color};box-shadow:0 0 8px ${team.color}88"></span>
+        <span class="bts-name">${team.name}</span>
+        <div class="bts-track"><div class="bts-fill" style="width:${pct}%;background:${team.color}"></div></div>
+        <span class="bts-pos">${team.position || 0}<span class="bts-total">/60</span></span>
+      `;
+      statusEl.appendChild(item);
+    });
   }
 }
 
