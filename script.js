@@ -914,6 +914,7 @@ const stopScoreboardBtn  = document.getElementById('stop-scoreboard-btn');
 const teamCountBtns      = document.querySelectorAll('.team-count-btn');
 
 let selectedTeamCount = 3;
+let pendingBoardMode  = false;
 
 /* ----------------------------------------------------------------
    SETUP – TEAMNAMEN GENEREREN
@@ -948,7 +949,7 @@ function startScoreboardGame() {
   scoreboardState.currentTeam  = 0;
   scoreboardState.active       = true;
 
-  scoreboardState.boardActive = true;
+  scoreboardState.boardActive = pendingBoardMode;
 
   for (let i = 0; i < selectedTeamCount; i++) {
     const input = document.getElementById(`team-input-${i}`);
@@ -965,8 +966,12 @@ function startScoreboardGame() {
   state.usedIndices = [];
 
   teamSetupScreen.classList.remove('screen--active');
-  saveGameState();
-  showBoardScreen();
+  if (scoreboardState.boardActive) {
+    saveGameState();
+    showBoardScreen();
+  } else {
+    playNextTeamCard();
+  }
 }
 
 /* ----------------------------------------------------------------
@@ -1081,7 +1086,8 @@ function goNextTeam() {
    EVENT LISTENERS – SCOREBORD
 ---------------------------------------------------------------- */
 
-startScoreboardBtn.addEventListener('click', openTeamSetup);
+startScoreboardBtn.addEventListener('click', () => { pendingBoardMode = true;  openTeamSetup(); });
+document.getElementById('start-teams-btn').addEventListener('click', () => { pendingBoardMode = false; openTeamSetup(); });
 
 backFromTeamsBtn.addEventListener('click', () => {
   teamSetupScreen.classList.remove('screen--active');
