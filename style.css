@@ -1,0 +1,1042 @@
+﻿/* ============================================================
+   CSS CUSTOM PROPERTIES
+============================================================ */
+:root {
+  /* Paginakleuren */
+  --clr-bg-a:         #07000a;
+  --clr-bg-b:         #130015;
+
+  /* HAN Green Office kaartpallet â€“ ROZE */
+  --clr-red:          #c2006e;
+  --clr-red-dark:     #880050;
+  --clr-red-glow:     rgba(194, 0, 110, 0.50);
+  --clr-card-bg-a:    #280018;
+  --clr-card-bg-b:    #0f0009;
+  --clr-card-border:  rgba(194, 0, 110, 0.40);
+
+  /* Tekstkleuren */
+  --clr-white:        #ffffff;
+  --clr-yellow:       #ff6ec7;   /* Kaart-titelkleur â€“ HAN roze accent */
+  --clr-grey-light:   #cccccc;
+  --clr-grey-mid:     #888888;
+
+  /* Footer kaart */
+  --clr-foot-bg:      rgba(0, 0, 0, 0.50);
+  --clr-foot-border:  rgba(255, 255, 255, 0.08);
+
+  /* Typografie */
+  --font: 'Segoe UI', Arial, Helvetica, sans-serif;
+
+  /* Misc */
+  --radius: 2px;
+  --transition: 0.22s ease;
+}
+
+/* ============================================================
+   RESET & BASIS
+============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html { height: 100%; }
+body {
+  min-height: 100%;
+  font-family: var(--font);
+  background: linear-gradient(158deg,
+    var(--clr-bg-a)  0%,
+    var(--clr-bg-b) 60%,
+    #0a0000        100%);
+  color: var(--clr-white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   PAGINA ACHTERGROND WAVES
+============================================================ */
+.bg-wave {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-wave--top    { top: 0; }
+.bg-wave--bottom { bottom: 0; }
+
+/* ============================================================
+   SCHERMEN
+============================================================ */
+.screen {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  width: 100%;
+}
+
+#start-screen.screen--active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 24px;
+}
+
+#game-screen.screen--active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 48px;
+  gap: 16px;
+}
+
+/* ============================================================
+   STARTSCHERM
+============================================================ */
+.start-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.title-block { width: 100%; }
+
+.main-title {
+  font-size: clamp(52px, 10vw, 110px);
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  color: var(--clr-white);
+  text-shadow:
+    -2px -2px 0 var(--clr-red),
+     2px -2px 0 var(--clr-red),
+    -2px  2px 0 var(--clr-red),
+     2px  2px 0 var(--clr-red),
+     0    0  30px var(--clr-red-glow);
+}
+
+.title-divider {
+  height: 3px;
+  background: var(--clr-white);
+  margin: 18px 0 14px;
+}
+
+.main-subtitle {
+  font-size: clamp(11px, 1.8vw, 15px);
+  letter-spacing: 0.36em;
+  color: var(--clr-grey-light);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* Themafilter */
+.filter-label {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.20);
+  color: var(--clr-grey-mid);
+  padding: 9px 18px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-family: var(--font);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filter-btn:hover,
+.filter-btn--active {
+  border-color: var(--clr-red);
+  color: var(--clr-white);
+  background: rgba(194, 0, 110, 0.16);
+}
+
+/* ============================================================
+   KNOPPEN
+============================================================ */
+.btn {
+  font-family: var(--font);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  border-radius: var(--radius);
+}
+
+.btn--primary {
+  background: var(--clr-red);
+  color: var(--clr-white);
+  padding: 18px 60px;
+  font-size: 14px;
+  box-shadow: 0 4px 24px var(--clr-red-glow);
+}
+.btn--primary:hover {
+  background: var(--clr-red-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 32px var(--clr-red-glow);
+}
+
+.btn--correct {
+  background: var(--clr-red);
+  color: var(--clr-white);
+  padding: 15px 24px;
+  font-size: 12px;
+  flex: 1;
+  box-shadow: 0 4px 18px rgba(180, 0, 0, 0.28);
+}
+.btn--correct:hover {
+  background: var(--clr-red-dark);
+  transform: translateY(-1px);
+}
+
+.btn--fout {
+  background: transparent;
+  color: var(--clr-red);
+  border: 1.5px solid var(--clr-red);
+  padding: 15px 24px;
+  font-size: 12px;
+  flex: 1;
+}
+.btn--fout:hover {
+  background: rgba(194, 0, 110, 0.12);
+  border-color: var(--clr-red);
+}
+
+.btn--skip {
+  background: transparent;
+  color: var(--clr-grey-light);
+  border: 1.5px solid rgba(255, 255, 255, 0.20);
+  padding: 12px 24px;
+  font-size: 11px;
+  flex: 1;
+}
+.btn--skip:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--clr-white);
+}
+
+.btn--next {
+  background: transparent;
+  color: var(--clr-grey-light);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  padding: 12px 24px;
+  font-size: 11px;
+  flex: 1;
+}
+.btn--next:hover {
+  color: var(--clr-white);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.btn--reset {
+  background: transparent;
+  color: var(--clr-grey-mid);
+  border: 1.5px solid rgba(255, 255, 255, 0.09);
+  padding: 12px 24px;
+  font-size: 11px;
+  flex: 1;
+}
+.btn--reset:hover {
+  color: var(--clr-white);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.powered-by-label {
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   GAME HEADER (score / timer / ronde)
+============================================================ */
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 620px;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 70px;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--clr-white);
+  line-height: 1;
+}
+
+/* ============================================================
+   TIMER
+============================================================ */
+.timer-wrapper {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+}
+
+.timer-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 6;
+}
+
+.timer-arc {
+  fill: none;
+  stroke: var(--clr-red);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear, stroke 0.4s ease;
+}
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--clr-white);
+  transition: color 0.4s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Urgent â€“ laatste 10 seconden */
+.timer-wrapper.is-urgent .timer-arc     { stroke: #ff3c3c; }
+.timer-wrapper.is-urgent .timer-display { color: #ff3c3c;  }
+
+/* ============================================================
+   GAMEKAART  â€“  HAN GREEN OFFICE STIJL + FLIP
+============================================================ */
+
+/* Perspectief-container */
+.card-wrapper {
+  width: 100%;
+  max-width: 580px;
+  perspective: 1400px;
+}
+
+/* De flip-wrapper â€“ draait als geheel */
+.card-flipper {
+  position: relative;
+  width: 100%;
+  height: 390px;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0.0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
+}
+
+/* Omgedraaide staat */
+.card-flipper.is-flipped {
+  transform: rotateY(180deg);
+  cursor: default;
+}
+
+/* Hover-hint op achterkant (vÃ³Ã³r flip) */
+.card-flipper:not(.is-flipped):hover .card-face--back {
+  border-color: rgba(194, 0, 110, 0.70);
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.65),
+    0  0  24px rgba(194, 0, 110, 0.25);
+}
+
+/* Gedeelde stijl voor voor- en achterkant */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.65),
+    0  0   1px rgba(194, 0, 110, 0.08);
+  background: linear-gradient(155deg,
+    var(--clr-card-bg-a) 0%,
+    var(--clr-card-bg-b) 100%);
+  border: 1px solid var(--clr-card-border);
+}
+
+/* â”€â”€ ACHTERKANT â”€â”€ */
+.card-face--back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.card-back-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.card-back-badge {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 255, 255, 0.60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--clr-white);
+  margin-bottom: 4px;
+}
+
+.card-back-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clr-yellow);
+  text-shadow: 0 0 18px rgba(255, 110, 199, 0.35);
+}
+
+.card-back-rule {
+  width: 56px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  margin: 2px 0;
+}
+
+.card-back-sub {
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.card-back-hint {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 10px;
+  /* subtiel pulserend effect */
+  animation: hint-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 0.55; }
+}
+
+.card-back-foot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  font-size: 7px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.20);
+  text-align: center;
+  padding: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.30);
+}
+
+/* â”€â”€ VOORKANT â”€â”€ */
+.card-face--front {
+  transform: rotateY(180deg); /* start omgekeerd, zichtbaar na flip */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Decoratieve wave-shapes op voor- en achterkant */
+.card-wave-svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 55%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Legacy alias zodat bestaande code blijft werken */
+.game-card { /* .card-face--front is het echte element */ }
+
+/* â”€â”€ Koptekstbalk van de kaart â”€â”€ */
+.card-header-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px 10px 18px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.card-header-label {
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Circulaire "30" badge rechtsboven */
+.card-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--clr-white);
+  letter-spacing: 0;
+  flex-shrink: 0;
+}
+
+/* â”€â”€ Kaartinhoud â”€â”€ */
+.card-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 14px 24px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Titel in geel â€“ kenmerkende HAN Green Office stijl */
+.card-title {
+  font-size: clamp(15px, 3vw, 22px);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.25;
+  color: var(--clr-yellow);
+  text-shadow: 0 0 16px rgba(255, 110, 199, 0.30);
+}
+
+/* Witte horizontale lijn onder de titel */
+.card-rule {
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.65);
+  margin: 12px 0 4px;
+}
+
+/* Woordenlijst */
+.card-words {
+  list-style: none;
+  flex: 1;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-words li {
+  font-size: clamp(13px, 2.3vw, 18px);
+  font-weight: 500;
+  text-align: center;
+  color: var(--clr-white);
+  padding: 7px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  letter-spacing: 0.02em;
+  transition: color 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+}
+
+.card-words li:last-child { border-bottom: none; }
+
+/* Actief woord â€“ geel gemarkeerd passend bij kaart stijl */
+.card-words li.is-active {
+  color: var(--clr-yellow);
+  font-weight: 700;
+  background: rgba(255, 110, 199, 0.08);
+  border-left: 3px solid var(--clr-yellow);
+  padding-left: 9px;
+}
+
+/* Correct geraden woord */
+.card-words li.is-done {
+  color: rgba(255, 255, 255, 0.28);
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* Fout / overgeslagen woord */
+.card-words li.is-fout {
+  color: rgba(194, 0, 110, 0.55);
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+/* â”€â”€ Kaart voettekst â”€â”€ */
+.card-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--clr-foot-bg);
+  border-top: 1px solid var(--clr-foot-border);
+  flex-shrink: 0;
+}
+
+.card-foot__left,
+.card-foot__center,
+.card-foot__right {
+  font-size: 7px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.card-foot__center {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ============================================================
+   BEDIENING (KNOPPEN RIJEN)
+============================================================ */
+.controls {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 580px;
+  flex-wrap: wrap;
+}
+
+.controls--secondary {
+  margin-top: -6px;
+}
+
+/* ============================================================
+   TIME'S UP OVERLAY
+============================================================ */
+.timesup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 300;
+  padding: 24px;
+}
+
+.timesup-title {
+  font-size: clamp(42px, 9vw, 80px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-white);
+  text-shadow: 0 0 40px var(--clr-red);
+}
+
+.timesup-score {
+  font-size: clamp(13px, 2.2vw, 17px);
+  letter-spacing: 0.28em;
+  color: var(--clr-grey-light);
+  text-transform: uppercase;
+}
+
+.timesup-divider {
+  width: 100px;
+  height: 2px;
+  background: var(--clr-white);
+  opacity: 0.20;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 540px) {
+  .timer-wrapper       { width: 72px; height: 72px; }
+  .timer-display       { font-size: 22px; }
+  .stat-value          { font-size: 30px; }
+  .card-flipper        { height: 340px; }
+  .card-foot__right    { display: none; }
+  .card-foot__left     { display: none; }
+  .btn--correct,
+  .btn--skip           { padding: 14px 16px; }
+}
+
+@media (max-width: 380px) {
+  .card-flipper        { height: 310px; }
+}
+
+@media (max-width: 360px) {
+  .main-title { font-size: 44px; }
+}
+
+/* ============================================================
+   MODE KNOPPEN (startscherm)
+============================================================ */
+.mode-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn--mode-board {
+  background: transparent;
+  color: var(--clr-white);
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  padding: 18px 48px;
+  font-size: 14px;
+}
+.btn--mode-board:hover {
+  border-color: var(--clr-red);
+  background: rgba(194, 0, 110, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   BORDSPEL SETUP SCHERM
+============================================================ */
+#team-setup-screen.screen--active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 24px;
+}
+
+.setup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.setup-title {
+  font-size: clamp(36px, 7vw, 72px) !important;
+}
+
+.player-count-section {
+  width: 100%;
+}
+
+.count-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.count-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.20);
+  background: transparent;
+  color: var(--clr-grey-light);
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.count-btn:hover,
+.count-btn--active {
+  border-color: var(--clr-red);
+  background: rgba(194, 0, 110, 0.16);
+  color: var(--clr-white);
+}
+
+.player-name-inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.player-name-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.player-name-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.player-name-input input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
+  color: var(--clr-white);
+  font-size: 14px;
+  font-family: var(--font);
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.22s ease;
+}
+
+.player-name-input input:focus {
+  border-color: rgba(194, 0, 110, 0.50);
+}
+
+.player-name-input input::placeholder {
+  color: var(--clr-grey-mid);
+}
+
+.setup-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ============================================================
+   SCOREBORD SCHERM
+============================================================ */
+#scoreboard-screen.screen--active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 24px 60px;
+}
+
+.scoreboard-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.scoreboard-title {
+  font-size: clamp(32px, 6vw, 64px) !important;
+}
+
+/* Scores lijst */
+.scores-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 14px 18px;
+  transition: border-color 0.22s ease, background 0.22s ease;
+}
+
+.score-row--active {
+  border-color: rgba(194, 0, 110, 0.55);
+  background: rgba(194, 0, 110, 0.10);
+}
+
+.score-row--leader {
+  border-color: rgba(255, 215, 0, 0.30);
+}
+
+.score-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.score-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--clr-grey-light);
+}
+
+.score-row--active .score-name {
+  color: var(--clr-white);
+}
+
+.score-points {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--clr-white);
+  min-width: 44px;
+  text-align: right;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--clr-grey-mid);
+  text-transform: uppercase;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+/* Score invoer */
+.score-entry-panel {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 4px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.score-entry-label {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--clr-grey-light);
+  line-height: 1.7;
+}
+
+.scoring-team-name {
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--clr-white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* +/- stepper */
+.score-stepper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.stepper-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: var(--clr-white);
+  font-size: 26px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.stepper-btn:hover {
+  border-color: var(--clr-red);
+  background: rgba(194, 0, 110, 0.16);
+}
+
+.stepper-value {
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--clr-white);
+  min-width: 64px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Volgende team paneel */
+.next-team-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* ============================================================
+   RESPONSIVE – SCOREBORD
+============================================================ */
+@media (max-width: 540px) {
+  .score-entry-panel { padding: 20px 16px; }
+  .stepper-value     { font-size: 44px; }
+  .stepper-btn       { width: 44px; height: 44px; font-size: 22px; }
+  .score-points      { font-size: 22px; }
+}

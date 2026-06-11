@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30 Seconds – HAN Green Office</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Pagina achtergrond waves -->
+  <svg class="bg-wave bg-wave--top" viewBox="0 0 1440 220"
+       preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,80 C360,180 720,0 1080,90 C1260,135 1380,60 1440,80 L1440,0 L0,0 Z"
+          fill="rgba(180,0,120,0.12)"/>
+    <path d="M0,120 C400,40 800,180 1200,70 C1340,40 1410,110 1440,90 L1440,0 L0,0 Z"
+          fill="rgba(180,0,120,0.07)"/>
+  </svg>
+  <svg class="bg-wave bg-wave--bottom" viewBox="0 0 1440 220"
+       preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,140 C360,40 720,200 1080,120 C1260,80 1380,160 1440,140 L1440,220 L0,220 Z"
+          fill="rgba(180,0,120,0.12)"/>
+    <path d="M0,100 C400,200 800,60 1200,140 C1340,175 1410,100 1440,120 L1440,220 L0,220 Z"
+          fill="rgba(180,0,120,0.07)"/>
+  </svg>
+
+  <!-- =====================================================
+       1. STARTSCHERM
+  ===================================================== -->
+  <section id="start-screen" class="screen screen--active">
+    <div class="start-content">
+
+      <div class="title-block">
+        <h1 class="main-title">30 SECONDS</h1>
+        <div class="title-divider"></div>
+        <p class="main-subtitle">HAN GREEN OFFICE EDITION</p>
+      </div>
+
+      <div class="filter-section">
+        <p class="filter-label">SELECTEER THEMA</p>
+        <div class="filter-buttons" role="group">
+          <button class="filter-btn filter-btn--active" data-category="All">ALL</button>
+          <button class="filter-btn" data-category="Education">EDUCATION</button>
+          <button class="filter-btn" data-category="Onderwijs">ONDERWIJS (NL)</button>
+          <button class="filter-btn" data-category="Sustainability">SUSTAINABILITY</button>
+          <button class="filter-btn" data-category="Climate">CLIMATE</button>
+          <button class="filter-btn" data-category="AI & Technology">AI & TECHNOLOGY</button>
+        </div>
+      </div>
+
+      <div class="mode-buttons">
+        <button id="start-card-btn" class="btn btn--primary">KAARTSPEL</button>
+        <button id="start-scoreboard-btn" class="btn btn--mode-board">MET TEAMS</button>
+      </div>
+
+      <p class="powered-by-label">POWERED BY HAN GREEN OFFICE</p>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       2. TEAM SETUP SCHERM
+  ===================================================== -->
+  <section id="team-setup-screen" class="screen">
+    <div class="setup-content">
+
+      <div class="title-block">
+        <h1 class="main-title setup-title">TEAMS</h1>
+        <div class="title-divider"></div>
+        <p class="main-subtitle">VOER DE TEAMNAMEN IN</p>
+      </div>
+
+      <div class="player-count-section">
+        <p class="filter-label">AANTAL TEAMS</p>
+        <div class="count-btns">
+          <button class="team-count-btn count-btn" data-count="2">2</button>
+          <button class="team-count-btn count-btn count-btn--active" data-count="3">3</button>
+          <button class="team-count-btn count-btn" data-count="4">4</button>
+          <button class="team-count-btn count-btn" data-count="5">5</button>
+          <button class="team-count-btn count-btn" data-count="6">6</button>
+        </div>
+      </div>
+
+      <div id="team-name-inputs" class="player-name-inputs">
+        <!-- Gegenereerd door JS -->
+      </div>
+
+      <div class="setup-actions">
+        <button id="confirm-teams-btn" class="btn btn--primary">SPEL STARTEN</button>
+        <button id="back-from-teams-btn" class="btn btn--reset">TERUG</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================
+       3. SCOREBORD SCHERM
+  ===================================================== -->
+  <section id="scoreboard-screen" class="screen">
+    <div class="scoreboard-content">
+
+      <div class="title-block">
+        <h1 class="main-title scoreboard-title">SCOREBORD</h1>
+        <div class="title-divider"></div>
+      </div>
+
+      <!-- Teamscores -->
+      <div id="scores-list" class="scores-list">
+        <!-- Gegenereerd door JS -->
+      </div>
+
+      <!-- Score invoer (na TIME'S UP) -->
+      <div id="score-entry-panel" class="score-entry-panel">
+        <p class="score-entry-label">
+          <span id="scoring-team-name" class="scoring-team-name">Team 1</span><br>
+          hoeveel woorden goed geraden?
+        </p>
+        <div class="score-stepper">
+          <button class="stepper-btn" id="score-minus">–</button>
+          <span id="stepper-value" class="stepper-value">0</span>
+          <button class="stepper-btn" id="score-plus">+</button>
+        </div>
+        <button id="confirm-score-btn" class="btn btn--primary">BEVESTIGEN</button>
+      </div>
+
+      <!-- Volgende team (na bevestigen) -->
+      <div id="next-team-panel" class="next-team-panel" style="display:none">
+        <button id="next-team-btn" class="btn btn--primary">VOLGENDE TEAM →</button>
+        <button id="stop-scoreboard-btn" class="btn btn--reset">SPEL STOPPEN</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================
+       4. KAARTSPEL SCHERM (bestaand + hergebruikt voor bord)
+  ===================================================== -->
+  <section id="game-screen" class="screen">
+
+    <header class="game-header">
+      <div class="stat-block">
+        <span class="stat-label">SCORE</span>
+        <span id="score-value" class="stat-value">0</span>
+      </div>
+
+      <div class="timer-wrapper" id="timer-wrapper" aria-label="Timer">
+        <svg class="timer-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle class="timer-track" cx="50" cy="50" r="42"/>
+          <circle id="timer-progress" class="timer-arc" cx="50" cy="50" r="42"/>
+        </svg>
+        <span id="timer-display" class="timer-display">30</span>
+      </div>
+
+      <div class="stat-block">
+        <span class="stat-label">RONDE</span>
+        <span id="round-value" class="stat-value">1</span>
+      </div>
+    </header>
+
+    <!-- Kaart met flip -->
+    <main class="card-wrapper">
+      <div class="card-flipper" id="card-flipper" role="button" tabindex="0"
+           aria-label="Klik om de kaart om te draaien">
+
+        <!-- Achterkant -->
+        <div class="card-face card-face--back">
+          <svg class="card-wave-svg" viewBox="0 0 580 400" preserveAspectRatio="none"
+               xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0,280 C120,210 280,330 430,260 C510,225 550,275 580,255 L580,400 L0,400 Z"
+                  fill="rgba(194,0,110,0.20)"/>
+            <path d="M0,320 C160,265 310,350 470,295 C535,268 562,310 580,292 L580,400 L0,400 Z"
+                  fill="rgba(194,0,110,0.11)"/>
+          </svg>
+          <div class="card-back-inner">
+            <div class="card-back-badge">30</div>
+            <p class="card-back-title">30 SECONDS</p>
+            <div class="card-back-rule"></div>
+            <p class="card-back-sub">HAN GREEN OFFICE</p>
+            <p class="card-back-hint">Klik om te starten</p>
+          </div>
+          <div class="card-back-foot">POWERED BY HAN GREEN OFFICE</div>
+        </div>
+
+        <!-- Voorkant -->
+        <article class="card-face card-face--front" id="game-card">
+          <svg class="card-wave-svg" viewBox="0 0 580 400" preserveAspectRatio="none"
+               xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M0,300 C120,240 260,340 400,280 C480,248 535,290 580,270 L580,400 L0,400 Z"
+                  fill="rgba(194,0,110,0.18)"/>
+            <path d="M0,330 C160,280 300,360 460,300 C520,276 555,315 580,298 L580,400 L0,400 Z"
+                  fill="rgba(194,0,110,0.10)"/>
+          </svg>
+          <div class="card-header-bar">
+            <span class="card-header-label">30 SECONDS</span>
+            <div class="card-badge">30</div>
+          </div>
+          <div class="card-body">
+            <h2 id="card-title" class="card-title">–</h2>
+            <hr class="card-rule" />
+            <ol id="card-words" class="card-words"></ol>
+          </div>
+          <footer class="card-foot">
+            <span class="card-foot__left">30 SECONDS</span>
+            <span id="card-category" class="card-foot__center">–</span>
+            <span class="card-foot__right">POWERED BY HAN GREEN OFFICE</span>
+          </footer>
+        </article>
+
+      </div>
+    </main>
+
+    <!-- Knoppen rij 1 -->
+    <div class="controls">
+      <button id="correct-btn" class="btn btn--correct">CORRECT &nbsp;+1</button>
+      <button id="fout-btn"    class="btn btn--fout">FOUT</button>
+    </div>
+    <!-- Knoppen rij 2 -->
+    <div class="controls controls--secondary">
+      <button id="skip-btn"       class="btn btn--skip">SKIP KAART</button>
+      <button id="next-round-btn" class="btn btn--next">NEXT ROUND</button>
+      <button id="reset-btn"      class="btn btn--reset">RESET</button>
+    </div>
+
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
